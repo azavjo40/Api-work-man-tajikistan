@@ -53,7 +53,7 @@ export class AuthService {
       if (candidate) return { message: 'This user already exists' };
       registerDto.password = await hash(password, 12);
       registerDto.dateCreated = new Date(Date.now()).toUTCString();
-      registerDto.isAbs = false;
+      registerDto.isAds = false;
       const user = await new this.auth(registerDto);
       await user.save();
       delete user.password;
@@ -74,9 +74,10 @@ export class AuthService {
     }
   }
 
-  public async updateUserIsAds(id: string, isAbs: boolean) {
+  public async updateUserIsAds(_id: string, isAds: boolean) {
     try {
-      this.auth.updateOne({ id }, { $set: { isAbs } }, { upsert: true });
+      await this.auth.updateOne({ _id }, { $set: { isAds } }, { upsert: true });
+      return;
     } catch (e) {
       console.log(e);
     }

@@ -5,7 +5,6 @@ import { AdsController } from './ads.controller';
 import { AdsService } from './ads.service';
 import { Ads, AdsSchema } from './schemas/ads.schema';
 import { AuthModule } from 'src/auth/auth.module';
-
 @Module({
   imports: [
     PassportModule,

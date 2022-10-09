@@ -14,10 +14,15 @@ export class AdsService {
 
   public async createAds(adsDto: AdsDto) {
     try {
-      adsDto.dateCreated = new Date(Date.now()).toUTCString();
-      await new this.ads(adsDto).save();
-      this.authService.updateUserIsAds(adsDto.userId, true);
-      return { message: 'Craeted ads...' };
+      const ads = await this.ads.findOne({ userId: adsDto?.userId });
+      if (ads) return { message: 'You have ads...' };
+      if (adsDto.userId) {
+        adsDto.dateCreated = new Date(Date.now()).toUTCString();
+        await new this.ads(adsDto).save();
+        await this.authService.updateUserIsAds(adsDto.userId, true);
+        return { message: 'Craeted ads...' };
+      }
+      return { message: 'Is not user id...' };
     } catch (e) {
       console.log(e);
     }
@@ -32,12 +37,21 @@ export class AdsService {
     }
   }
 
-  public async getAdsById(id: string, userId: string) {
+  public async getAdsById(_id: string) {
     try {
-      let ads: any;
-      if (id) ads = await this.ads.findById({ _id: id });
-      else if (id) ads = await this.ads.findById({ userId });
-      return ads;
+      const ads: AdsDto = await this.ads.findOne({ _id });
+      if (ads) return ads;
+      return { message: 'Not found ads...' };
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async getAdsByIdUser(userId: string) {
+    try {
+      const ads: AdsDto = await this.ads.findOne({ userId });
+      if (ads) return ads;
+      return { message: 'Not found ads...' };
     } catch (e) {
       console.log(e);
     }
@@ -45,17 +59,21 @@ export class AdsService {
 
   public async getAdsAll() {
     try {
-      const ads: any = await this.ads.find();
+      const ads: Array<AdsDto> = await this.ads.find();
       return ads;
     } catch (e) {
       console.log(e);
     }
   }
 
-  public async deleteAds(id: string) {
+  public async deleteAds(userId: string) {
     try {
-      await this.ads.deleteOne({ _id: id });
-      return { message: 'Deleted ads...' };
+      if (userId) {
+        await this.ads.deleteOne({ userId });
+        await this.authService.updateUserIsAds(userId, false);
+        return { message: 'Deleted ads...' };
+      }
+      return { message: 'Not Auth...' };
     } catch (e) {
       console.log(e);
     }

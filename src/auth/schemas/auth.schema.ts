@@ -23,7 +23,7 @@ export class Auth {
   image?: string;
 
   @Prop()
-  isAbs?: boolean;
+  isAds?: boolean;
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);

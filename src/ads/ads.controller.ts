@@ -26,13 +26,19 @@ export class AdsController {
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  putAds(@Body(new ValidationPipe()) adsDto: AdsDto, @Request() req) {
-    return this.adsService.putAds(adsDto, req?.user?.id);
+  putAds(@Body() adsDto: any, @Request() req) {
+    return this.adsService.putAds(adsDto, req?.user?._id);
   }
 
   @Get('/:id')
-  getAdsById(@Param('id') id: string, @Request() req) {
-    return this.adsService.getAdsById(id, req?.user?.id);
+  getAdsById(@Param('id') _id: string) {
+    return this.adsService.getAdsById(_id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('user/:id')
+  getAdsByIdUser(@Request() req) {
+    return this.adsService.getAdsByIdUser(req?.user?._id);
   }
 
   @Get()
@@ -41,8 +47,8 @@ export class AdsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('/:id')
-  deleteAds(@Param('id') id: string) {
-    return this.adsService.deleteAds(id);
+  @Delete()
+  deleteAds(@Request() req) {
+    return this.adsService.deleteAds(req?.user?._id);
   }
 }
