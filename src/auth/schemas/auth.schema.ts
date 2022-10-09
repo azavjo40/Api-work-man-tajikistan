@@ -21,6 +21,9 @@ export class Auth {
 
   @Prop()
   image?: string;
+
+  @Prop()
+  isAbs?: boolean;
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);

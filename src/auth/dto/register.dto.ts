@@ -16,4 +16,5 @@ export class RegisterDto {
   dateCreated?: string;
 
   image?: string;
+  isAbs?: boolean;
 }

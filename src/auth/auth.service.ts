@@ -5,7 +5,6 @@ import { RegisterDto } from './dto/register.dto';
 import { Auth, AuthDocument } from './schemas/auth.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { AnyAaaaRecord } from 'dns';
 
 @Injectable()
 export class AuthService {
@@ -54,6 +53,7 @@ export class AuthService {
       if (candidate) return { message: 'This user already exists' };
       registerDto.password = await hash(password, 12);
       registerDto.dateCreated = new Date(Date.now()).toUTCString();
+      registerDto.isAbs = false;
       const user = await new this.auth(registerDto);
       await user.save();
       delete user.password;
@@ -69,6 +69,14 @@ export class AuthService {
       candidate.image = image.image;
       await new this.auth(candidate).save();
       return { message: 'Updated image' };
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async updateUserIsAds(id: string, isAbs: boolean) {
+    try {
+      this.auth.updateOne({ id }, { $set: { isAbs } }, { upsert: true });
     } catch (e) {
       console.log(e);
     }
