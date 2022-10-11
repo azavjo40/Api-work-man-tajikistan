@@ -40,7 +40,9 @@ export class AdsService {
   public async getAdsById(_id: string) {
     try {
       const ads: AdsDto = await this.ads.findOne({ _id });
-      if (ads) return ads;
+      const user = await this.authService.getUserById(ads.userId);
+      const adsResuls = { ads: ads, user };
+      if (ads) return adsResuls;
       return { message: 'Not found ads...' };
     } catch (e) {
       console.log(e);
@@ -50,7 +52,9 @@ export class AdsService {
   public async getAdsByIdUser(userId: string) {
     try {
       const ads: AdsDto = await this.ads.findOne({ userId });
-      if (ads) return ads;
+      const user = await this.authService.getUserById(ads.userId);
+      const adsResuls = { ads: ads, user };
+      if (ads) return adsResuls;
       return { message: 'Not found ads...' };
     } catch (e) {
       console.log(e);
@@ -59,8 +63,29 @@ export class AdsService {
 
   public async getAdsAll() {
     try {
-      const ads: Array<AdsDto> = await this.ads.find();
-      return ads;
+      let ads: any = await this.ads.find();
+      const adsResuls = [];
+      ads = [
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+        ...ads,
+      ];
+      for (let i = 0; i < ads.length; i++) {
+        const user = await this.authService.getUserById(ads[i].userId);
+        adsResuls.push({ ads: ads[i], user });
+      }
+      return adsResuls;
     } catch (e) {
       console.log(e);
     }

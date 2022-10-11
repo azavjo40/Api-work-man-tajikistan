@@ -82,4 +82,14 @@ export class AuthService {
       console.log(e);
     }
   }
+
+  public async getUserById(_id: string) {
+    try {
+      const user: any = await this.auth.findOne({ _id });
+      const { password, ...result } = user._doc;
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

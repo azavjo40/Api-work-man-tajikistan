@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { stat, unlink, unlinkSync } from 'fs';
+import { stat, unlinkSync } from 'fs';
 
 @Injectable()
 export class ImagesService {

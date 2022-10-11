@@ -23,7 +23,7 @@ export class ImagesController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image', imageDiskStorage))
   create(@UploadedFile() file: File) {
-    return 'upload/' + file?.filename;
+    return { url: 'upload/' + file?.filename };
   }
 
   @Put('/:update')
