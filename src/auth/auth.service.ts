@@ -1,3 +1,4 @@
+import { ImagesService } from './../images/images.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcryptjs';
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     @InjectModel(Auth.name) private auth: Model<AuthDocument>,
     private jwtService: JwtService,
+    private imagesService: ImagesService,
   ) {}
 
   public async validateUser(username: string, pass: string): Promise<any> {
@@ -63,10 +65,11 @@ export class AuthService {
     }
   }
 
-  public async updateUser(user: any, image: any) {
+  public async updateUserImage(user: any, url: any) {
     try {
       const candidate = await this.auth.findOne({ _id: user._id });
-      candidate.image = image.image;
+      this.imagesService.update(url, candidate.image.split('upload/')[1]);
+      candidate.image = 'upload/' + url;
       await new this.auth(candidate).save();
       return { message: 'Updated image' };
     } catch (e) {

@@ -25,7 +25,11 @@ export class Ads {
   @Prop()
   isPublish: boolean;
 
-  dateCreated?: string;
+  @Prop()
+  dateCreated: string;
+
+  @Prop()
+  dateUpdate: string;
 }
 
 export const AdsSchema = SchemaFactory.createForClass(Ads);

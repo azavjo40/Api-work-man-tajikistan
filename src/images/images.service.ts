@@ -3,11 +3,11 @@ import { stat, unlinkSync } from 'fs';
 
 @Injectable()
 export class ImagesService {
-  public update(image: string, update: string) {
+  public update(image: string, remove: string) {
     try {
-      stat('./upload/' + update, function (err, stats) {
+      stat('./upload/' + remove, function (err, stats) {
         if (err) return;
-        unlinkSync('upload/' + update);
+        unlinkSync('upload/' + remove);
       });
       return image;
     } catch (e) {

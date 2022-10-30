@@ -9,6 +9,7 @@ import {
   UseGuards,
   ValidationPipe,
   Request,
+  Query,
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from 'src/core/jwt/jwt-auth.guard';
@@ -30,6 +31,18 @@ export class AdsController {
     return this.adsService.putAds(adsDto, req?.user?._id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Put('image/upload/:url')
+  putAdsImage(@Param('url') url: string, @Request() req) {
+    return this.adsService.putAdsImage(url, req?.user?._id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('image/upload/:url')
+  deleteAdsImage(@Param('url') url: string, @Request() req) {
+    return this.adsService.DeleteAdsImage(url, req?.user?._id);
+  }
+
   @Get('/:id')
   getAdsById(@Param('id') _id: string) {
     return this.adsService.getAdsById(_id);
@@ -42,8 +55,8 @@ export class AdsController {
   }
 
   @Get()
-  getAdsAll() {
-    return this.adsService.getAdsAll();
+  getAdsAll(@Query() query) {
+    return this.adsService.getAdsAll(query);
   }
 
   @UseGuards(JwtAuthGuard)

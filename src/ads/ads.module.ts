@@ -1,3 +1,4 @@
+import { ImagesModule } from './../images/images.module';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -10,6 +11,7 @@ import { AuthModule } from 'src/auth/auth.module';
     PassportModule,
     MongooseModule.forFeature([{ name: Ads.name, schema: AdsSchema }]),
     AuthModule,
+    ImagesModule,
   ],
   controllers: [AdsController],
   providers: [AdsService],

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Request,
@@ -29,9 +30,9 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('update/user')
-  updateUser(@Request() req: any, @Body() image: any) {
-    return this.authService.updateUser(req.user, image);
+  @Put('user/image/upload/:url')
+  updateUser(@Param('url') url: string, @Request() req: any) {
+    return this.authService.updateUserImage(req.user, url);
   }
 
   @UseGuards(JwtAuthGuard)

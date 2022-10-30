@@ -26,16 +26,15 @@ export class ImagesController {
     return { url: 'upload/' + file?.filename };
   }
 
-  @Put('/:update')
+  @Put('/:remove')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image', imageDiskStorage))
-  update(@Param('update') update: string, @UploadedFile() file: File) {
-    return this.imagesService.update('upload/' + file?.filename, update);
+  update(@Param('remove') remove: string, @UploadedFile() file: File) {
+    return this.imagesService.update('upload/' + file?.filename, remove);
   }
 
   @Delete('/:remove')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('image', imageDiskStorage))
   delete(@Param('remove') remove: string) {
     return this.imagesService.delete(remove);
   }

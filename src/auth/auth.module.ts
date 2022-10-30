@@ -1,3 +1,4 @@
+import { ImagesModule } from './../images/images.module';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
@@ -18,6 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '24h' },
     }),
+    ImagesModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, LocalAuthGuard, JwtStrategy],
