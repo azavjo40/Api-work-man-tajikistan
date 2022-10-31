@@ -86,7 +86,6 @@ export class AdsService {
     try {
       if (query?.isIntegrtion == 'true') {
         const dataSomon = await this.integrtionAdsSomonGetById(_id).toPromise();
-        console.log(dataSomon);
         return dataSomon;
       }
       const ads: AdsDto = await this.ads.findOne({ _id });
@@ -103,7 +102,6 @@ export class AdsService {
     try {
       return this.http.get(`https://somon.tj/api/items/${_id}/`).pipe(
         map((item: any) => {
-          console.log(item);
           return {
             ads: {
               title: item?.data?.title,
@@ -154,13 +152,14 @@ export class AdsService {
   public async getAdsAll(query: any) {
     try {
       let ads: any = await this.ads.find();
+      const dataSomon = await this.integrtionAdsSomonGetAll().toPromise();
       let adsResuls: any = [];
       for (let i = 0; i < ads.length; i++) {
         const user = await this.authService.getUserById(ads[i].userId);
         adsResuls.push({ ads: ads[i], user });
       }
-      const dataSomon = await this.integrtionAdsSomonGetAll().toPromise();
-      adsResuls = [...adsResuls, ...dataSomon];
+      adsResuls.push(...dataSomon);
+
       if ((query?.page, query?.perPage)) {
         const page = Number(query.page);
         const perPage = Number(query.perPage);
@@ -171,10 +170,7 @@ export class AdsService {
           };
         }
         return {
-          data: adsResuls.splice(
-            page == 1 ? page : (page - 1) * perPage,
-            perPage,
-          ),
+          data: adsResuls.splice(page == 1 ? 0 : (page - 1) * perPage, perPage),
           total: adsResuls.length,
         };
       }
