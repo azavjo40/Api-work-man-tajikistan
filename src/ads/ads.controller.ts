@@ -44,8 +44,8 @@ export class AdsController {
   }
 
   @Get('/:id')
-  getAdsById(@Param('id') _id: string) {
-    return this.adsService.getAdsById(_id);
+  getAdsById(@Query() query, @Param('id') _id: string) {
+    return this.adsService.getAdsById(_id, query);
   }
 
   @UseGuards(JwtAuthGuard)
