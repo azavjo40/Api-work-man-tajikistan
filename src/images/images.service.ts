@@ -5,10 +5,12 @@ import { stat, unlinkSync } from 'fs';
 export class ImagesService {
   public update(image: string, remove: string) {
     try {
-      stat('./upload/' + remove, function (err, stats) {
-        if (err) return;
-        unlinkSync('upload/' + remove);
-      });
+      if (remove) {
+        stat('./upload/' + remove, function (err, stats) {
+          if (err) return;
+          unlinkSync('upload/' + remove);
+        });
+      }
       return image;
     } catch (e) {
       console.log(e);

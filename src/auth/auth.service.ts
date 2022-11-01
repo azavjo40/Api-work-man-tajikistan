@@ -68,7 +68,7 @@ export class AuthService {
   public async updateUserImage(user: any, url: any) {
     try {
       const candidate = await this.auth.findOne({ _id: user._id });
-      this.imagesService.update(url, candidate.image.split('upload/')[1]);
+      this.imagesService.update(url, candidate?.image?.split('upload/')[1]);
       candidate.image = 'upload/' + url;
       await new this.auth(candidate).save();
       return { message: 'Updated image' };
